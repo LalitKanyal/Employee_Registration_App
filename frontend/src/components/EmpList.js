@@ -1,57 +1,58 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-export default function EmpList() {
-  return (
-    <table class="table table-bordered">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Full Name</th>
-      <th scope="col">Contact</th>
-      <th scope="col">Email</th>
-      <th scope="col">Address</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Address</td>
-      <td>
-        <Link to={"/update/1"} className="btn btn-primary mr-2">Update</Link>
-        <button className='btn btn-danger'>Delete</button>
-        
-      </td>
-      {/* <td>
-        <Link to={"/update/1"} className="btn btn-primary">Update</Link>
-      </td> */}
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-      <td>Address</td>
-      <td>
-        <Link to={"/update/1"} className="btn btn-primary mr-2">Update</Link>
-        <button className='btn btn-danger'>Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-      <td>Address</td>
-      <td>
-        <Link to={"/update/1"} className="btn btn-primary mr-2">Update</Link>
-        <button className='btn btn-danger'>Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+class EmpList extends React.Component{
+  constructor(){
+    super();
+    this.state={
+      data:[]
+    };
+  }
+  fetchData(){
+    fetch('http://localhost:8000/employee/')
+    .then(response=>response.json())
+    .then((data)=>{
+      this.setState({
+        data:data
+      })
+      // console.log("data>>>>>>", data)
+    })
+  }
+
+  componentDidMount(){
+    this.fetchData();
+  }
+  render() {
+    const empData=this.state.data;
+    const rows=empData.map((emp)=>
+      <tr key={emp.id}>
+        <td>{emp.full_name}</td>
+        <td>{emp.contact}</td>
+        <td>{emp.email}</td>
+        <td>{emp.address}</td>
+        <td>
+          <Link to={"/update/"+emp.id} className="btn btn-primary mr-2">Update</Link>
+          <button className='btn btn-danger'>Delete</button>
+        </td>
+      </tr>
+    );
+    return (  
+    <table className="table table-bordered">
+    <thead className="thead-light">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Email</th>
+        <th scope="col">Address</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows}
+    </tbody>
+  </table>
   )
+  }
 }
+  
+export default EmpList

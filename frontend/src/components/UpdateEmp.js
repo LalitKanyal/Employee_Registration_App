@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function UpdateEmp() {
   return (
-    <table class="table table-bordered">
+    <table className="table table-bordered">
     <tr>
     <th scope="col">Full Name</th>
     <td>
